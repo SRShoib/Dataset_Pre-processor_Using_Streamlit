@@ -1,4 +1,3 @@
-<img width="1536" height="854" alt="preview" src="https://github.com/user-attachments/assets/78fa00f1-6237-476a-b0e7-cda11dc7601f" />
 # Dataset Pre-Processor (Streamlit)
 
 A beautiful, fast, and flexible **image dataset Pre-processor** built with Streamlit.

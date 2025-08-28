@@ -1,6 +1,7 @@
+<img width="1536" height="854" alt="preview" src="https://github.com/user-attachments/assets/78fa00f1-6237-476a-b0e7-cda11dc7601f" />
 # Dataset Pre-Processor (Streamlit)
 
-A beautiful, fast, and flexible **image dataset processor** built with Streamlit.
+A beautiful, fast, and flexible **image dataset Pre-processor** built with Streamlit.
 
 - 🧼 **Background Remove** (powered by `rembg`)
 - 🧩 **Pad to Square** (auto or custom size)
@@ -38,12 +39,23 @@ A beautiful, fast, and flexible **image dataset processor** built with Streamlit
 
 ## Demo
 
-- **Hero UI, glass cards, and theme accents**
-- **Preview tab** shows first few images from the selected dataset
-- **Run Log & Errors tabs** keep you informed during processing
-- **Before/After** slider (first processed image)
+- **Background Remove**
+<img width="1919" height="954" alt="bg remove" src="https://github.com/user-attachments/assets/adc35426-8b99-4e20-84fb-564d1a473fd9" />
 
-> Add screenshots or GIFs here (recommended).
+- **Resize**
+<img width="1919" height="989" alt="resize" src="https://github.com/user-attachments/assets/c826d062-4d71-4e7c-bd34-e6690d5ce484" />
+
+- **Brightness Enhance**
+<img width="1907" height="987" alt="brigtness" src="https://github.com/user-attachments/assets/042f339d-529f-4dcc-a4c9-798a1d77fe2a" />
+
+- **Do all (Background Remove, Resize, Brightness Enhance)**
+<img width="1919" height="988" alt="all" src="https://github.com/user-attachments/assets/8da336c5-5422-4b8a-bfbb-fd5791255b08" />
+
+- **Preview** Preview dataset samples
+<img width="1536" height="854" alt="preview" src="https://github.com/user-attachments/assets/7d42e788-282a-496c-afce-4a6516ed9984" />
+
+- **Before/After** slider (first processed image)
+<img width="1685" height="795" alt="befor and after" src="https://github.com/user-attachments/assets/af9df1df-5223-43ed-a6e0-462904d49fc3" />
 
 ---
 

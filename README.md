@@ -50,10 +50,10 @@ A beautiful, fast, and flexible **image dataset Pre-processor** built with Strea
 - **Do all (Background Remove, Resize, Brightness Enhance)**
 <img width="1919" height="988" alt="all" src="https://github.com/user-attachments/assets/8da336c5-5422-4b8a-bfbb-fd5791255b08" />
 
-- **Preview** Preview dataset samples
+- **Preview:** Preview dataset samples
 <img width="1536" height="854" alt="preview" src="https://github.com/user-attachments/assets/7d42e788-282a-496c-afce-4a6516ed9984" />
 
-- **Before/After** slider (first processed image)
+- **Before/After:** slider (first processed image)
 <img width="1685" height="795" alt="befor and after" src="https://github.com/user-attachments/assets/af9df1df-5223-43ed-a6e0-462904d49fc3" />
 
 ---

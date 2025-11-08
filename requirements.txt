@@ -1,4 +1,7 @@
 streamlit
 pillow
-rembg
+rembg==2.0.50
+onnxruntime==1.17.3
+numpy<2
 streamlit-image-comparison
+requests

@@ -20,8 +20,13 @@ except Exception:
     HAS_COMPARISON = False
 
 # Native folder picker (local runs)
-import tkinter as tk
-from tkinter import filedialog
+try:
+    import tkinter as tk
+    from tkinter import filedialog
+except:
+    tk = None
+    filedialog = None
+
 
 
 # =========================
@@ -76,7 +81,9 @@ def ensure_dir(path: Path):
     path.parent.mkdir(parents=True, exist_ok=True)
 
 def pick_directory_dialog() -> Optional[Path]:
-    """Open a native OS folder picker. Works on local runs."""
+    if tk is None:
+        st.warning("Folder picker not available on Streamlit Cloud. Use ZIP upload instead.")
+        return None
     try:
         root = tk.Tk()
         root.withdraw()
@@ -337,7 +344,11 @@ with st.sidebar:
     operation_key = op_map[operation]
 
     st.subheader("📥 Input")
-    input_method = st.radio("Pick source", ["Browse local folder", "Upload ZIP"], horizontal=True)
+    input_method = st.radio(
+        "Pick source",
+        ["Browse local folder","Upload ZIP", "Import from Google Drive"],
+        horizontal=True
+    )
     selected_input_dir: Optional[Path] = None
 
     if input_method == "Browse local folder":
@@ -349,24 +360,60 @@ with st.sidebar:
             selected_input_dir = Path(st.session_state["chosen_input_dir"])
             st.success(f"Input: {selected_input_dir}")
         st.caption("Use native folder dialog on local runs.")
-    else:
+    elif input_method == "Upload ZIP":
         up = st.file_uploader("Upload dataset ZIP", type=["zip"], key="zip_uploader")
         if up is not None:
             st.session_state["uploaded_zip"] = up.getvalue()
             st.success("ZIP uploaded.")
+    
+    elif input_method == "Import from Google Drive":
+        st.info("Paste the **Google Drive link** (file or folder). Make sure it’s shared publicly or accessible via 'Anyone with the link'.")
+        drive_url = st.text_input("🔗 Google Drive link")
+        if drive_url:
+            import requests, re, io, zipfile, tempfile
+            from pathlib import Path
+    
+            # Detect file ID from Google Drive link
+            match = re.search(r'/d/([a-zA-Z0-9_-]+)', drive_url)
+            if not match:
+                st.error("Invalid Google Drive link.")
+            else:
+                file_id = match.group(1)
+                download_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    
+                try:
+                    st.write("Downloading from Google Drive...")
+                    response = requests.get(download_url)
+                    if response.status_code == 200:
+                        tmpdir = Path(tempfile.mkdtemp(prefix="input_drive_"))
+                        # Try unzip if it's a ZIP
+                        try:
+                            with zipfile.ZipFile(io.BytesIO(response.content)) as z:
+                                z.extractall(tmpdir)
+                                st.success(f"Dataset downloaded and extracted to: {tmpdir}")
+                                st.session_state["chosen_input_dir"] = str(tmpdir)
+                        except zipfile.BadZipFile:
+                            st.error("This Google Drive file is not a ZIP. Please upload or link a ZIP dataset.")
+                    else:
+                        st.error("Failed to download file from Google Drive. Check permissions.")
+                except Exception as e:
+                    st.error(f"Download error: {e}")
 
     st.subheader("📤 Output")
     output_method = st.radio("Save to", ["Browse local folder", "Download as ZIP"], horizontal=True)
     selected_output_dir: Optional[Path] = None
     if output_method == "Browse local folder":
-        if st.button("📂 Choose output folder"):
-            chosen = pick_directory_dialog()
-            if chosen:
-                st.session_state["chosen_output_dir"] = str(chosen.resolve())
-        if "chosen_output_dir" in st.session_state:
-            selected_output_dir = Path(st.session_state["chosen_output_dir"])
-            st.success(f"Output: {selected_output_dir}")
-        st.caption("Pick or create a folder to store results.")
+        if tk is None:
+            st.warning("Folder picker not available on Streamlit Cloud. Use Download as ZIP  instead.")
+        else:
+            if st.button("📂 Choose output folder"):
+                chosen = pick_directory_dialog()
+                if chosen:
+                    st.session_state["chosen_output_dir"] = str(chosen.resolve())
+            if "chosen_output_dir" in st.session_state:
+                selected_output_dir = Path(st.session_state["chosen_output_dir"])
+                st.success(f"Output: {selected_output_dir}")
+            st.caption("Pick or create a folder to store results.")
 
 # ========= Show ONLY the relevant controls per operation =========
 
@@ -645,4 +692,5 @@ if go:
         <div class="custom-footer">© {YEAR} Developed by <strong>Md. Mehedi Hasan Shoib</strong></div>
         """,
         unsafe_allow_html=True,
+
     )
